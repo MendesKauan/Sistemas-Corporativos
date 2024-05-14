@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "devuser", 
+    "username": "root", 
     "password": "dev@123", 
     "database": "sistemaDB", 
     "host": "127.0.0.1",

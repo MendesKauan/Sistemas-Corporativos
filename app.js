@@ -48,6 +48,6 @@ async function ApplyMigrations() {
  ApplyMigrations();
 
 
-const PORT = 5000;
+const PORT = 3000;
 app.listen(PORT, console.log(`rodando na porta ${PORT}`));
 //module.exports = app;
