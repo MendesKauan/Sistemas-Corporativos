@@ -13,15 +13,15 @@ router.post('/newProduct', verifyToken, function(req, res) {
     ProductController.create(req, res);
 });
 
-router.post('/update', function(req, res) {
+router.post('/update', verifyToken, function(req, res) {
     ProductController.update(req, res);
 });
 
-router.get('/getAllProduct', function(req, res) {
+router.get('/getAllProduct', verifyToken, function(req, res) {
     ProductController.getAllProduct(req, res);
 })
 
-router.get('/productById', function(req, res) {
+router.get('/productById', verifyToken, function(req, res) {
     ProductController.getProductById(req, res);
 });
 
