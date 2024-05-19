@@ -31,7 +31,6 @@ class userService {
         }
     }
 
-
     async getAllUser(login, password) {
         try {
            const AllUser = this.User.findAll();

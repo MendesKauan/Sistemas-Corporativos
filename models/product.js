@@ -1,20 +1,22 @@
+// ./models/product.js
+
 const Sequelize = require('sequelize');
-const { sequelize } = require('.');
 
 module.exports = (sequelize) => {
+
     const Product = sequelize.define('Product', {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
-            primaryKey: true
+            primaryKey: true,
         },
         name: {
             type: Sequelize.STRING,
-            allowNull: false,
+            allownull: false
         },
-        price: {
-            type: Sequelize.DOUBLE,
-            allowNull: false,
+        active: {
+            type: Sequelize.BOOLEAN,
+            allownull: false
         }
     });
 
