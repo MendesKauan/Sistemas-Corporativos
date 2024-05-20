@@ -10,6 +10,17 @@ class productService {
 
     async create(name, active) {
         try {
+
+            const existingProduct = await this.ProductModel.findOne({
+                where: {
+                    name: name
+                }
+            });
+
+            if(existingProduct) {
+                throw new Error('Produto já existe');
+            }
+        
             const newProduct = await this.ProductModel.create(
                 {
                     name: name,
@@ -20,7 +31,7 @@ class productService {
             return newProduct ? newProduct : null;
             
         } catch (error) {
-            
+            throw error
         }
     }
 

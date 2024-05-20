@@ -10,10 +10,16 @@ class productController {
 
         try {
             const newProduct = await this.productService.create(name, active);
+            
             res.status(200).json(newProduct);
             
         } catch (error) {
-            res.status(500).json({error:'erro ao inserir novo produto'});
+            if(error.message === 'Produto já existe') {
+                res.status(400).json({ error: error.message });
+            }
+            else {
+                res.status(500).json({error:'erro ao inserir novo produto'});
+            }
         }
     }
 

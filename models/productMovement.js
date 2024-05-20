@@ -13,18 +13,10 @@ module.exports = (sequelize) => {
         IdProduct: {
             type: Sequelize.INTEGER,
             allowNull: false,
-            references: {
-                model: 'Product',
-                key: 'id'
-            }
         },
         IdDeposit: {
             type: Sequelize.INTEGER,
             allowNull: false,
-            references: {
-                model: 'Deposit',
-                key: 'id'
-            }
         },
         typeMovement: {
             type: Sequelize.ENUM('entrada', 'saida'),
@@ -48,10 +40,10 @@ module.exports = (sequelize) => {
         }
     });
 
-    // ProductMovement.associate = (models) => {
-    //     ProductMovement.belongsTo(models.Deposit, { foreignKey: 'IdDeposit' });
-    //     ProductMovement.belongsTo(models.Product, { foreignKey: 'IdProduct' });
-    // }
+    ProductMovement.associate = (models) => {
+        ProductMovement.belongsTo(models.Deposit, { foreignKey: 'IdDeposit' });
+        ProductMovement.belongsTo(models.Product, { foreignKey: 'IdProduct' });
+    }
 
     return ProductMovement;
 }

@@ -20,9 +20,9 @@ module.exports = (sequelize) => {
         }
     });
 
-    // Product.associate = (models) => {
-    //     Product.hasMany(models.ProductMovement, { foreignKey: 'IdProduct' });
-    // }
+    Product.associate = (models) => {
+        Product.hasMany(models.ProductMovement, { foreignKey: 'IdProduct' });
+    }
 
     return Product;
 }

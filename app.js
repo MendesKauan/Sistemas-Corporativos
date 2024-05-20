@@ -7,6 +7,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var productRouter = require('./routes/productRoutes');
 var depositRouter = require('./routes/depositRoutes');
+var productMovementRouter = require('./routes/productMovementRoutes');
+
 
 var app = express();
 
@@ -21,6 +23,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productRouter);
 app.use('/deposits', depositRouter);
+app.use('/productMovement', productMovementRouter);
 
 
 const db = require('./models');
@@ -36,14 +39,14 @@ async function ApplyMigrations() {
             alter: true,
         };
 
-        await db.Product.sync(); // Primeiro sincronize Product
-        await db.Deposit.sync(); // Depois sincronize Deposit
+        await db.Product.sync(); 
+        await db.Deposit.sync(); 
         await db.ProductMovement.sync();
 
-        //  await db.sequelize.sync({
-        //     alter: migration_config.alter,
+         await db.sequelize.sync({
+            alter: migration_config.alter,
             
-        // });
+        });
 
         console.log('SINCRONIZAÇÃO COM O BD REALIZADA');
     }
