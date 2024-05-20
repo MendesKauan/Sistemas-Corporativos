@@ -20,5 +20,9 @@ module.exports = (sequelize) => {
         }
     });
 
+    // Deposit.associate = (models) => {
+    //     Deposit.hasMany(models.ProductMovement, { foreignKey: 'IdDeposit' });
+    // }
+
     return Deposit;
 }

@@ -35,10 +35,15 @@ async function ApplyMigrations() {
             create: true,
             alter: true,
         };
-        
-         db.sequelize.sync({
-            alter: migration_config.alter,
-        });
+
+        await db.Product.sync(); // Primeiro sincronize Product
+        await db.Deposit.sync(); // Depois sincronize Deposit
+        await db.ProductMovement.sync();
+
+        //  await db.sequelize.sync({
+        //     alter: migration_config.alter,
+            
+        // });
 
         console.log('SINCRONIZAÇÃO COM O BD REALIZADA');
     }
