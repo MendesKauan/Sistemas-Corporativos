@@ -12,6 +12,7 @@ class productMovementController {
 
          const newMovement = await this.productMovementService.create(nameDeposit, nameProduct, typeMovement, subtypeMovement, amount, unitPrice, date);
          res.status(200).json(newMovement);
+         res.status(200).json(newMovement);
             
         } catch (error) {
            
