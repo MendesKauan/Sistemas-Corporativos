@@ -22,10 +22,10 @@ class productMovementService {
                 }
             });
 
-            const newMovement =  await this.productMovementModel.create(
-                { 
-                    idProduct: idProduct.id,
-                    idDeposit: idDeposit.id,
+            const newMovement = await this.productMovementModel.create(
+                {
+                    IdProduct: idProduct.id,
+                    IdDeposit: idDeposit.id,
                     typeMovement: typeMovement,
                     subtypeMovement: subtypeMovement,
                     amount: amount,
@@ -36,7 +36,7 @@ class productMovementService {
 
             return newMovement ? newMovement : null
 
-            
+
         } catch (error) {
             throw error
         }

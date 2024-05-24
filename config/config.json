@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "root", 
-    "password": "dev@123", 
-    "database": "sistemaDB", 
+    "username": "root",
+    "password": "password",
+    "database": "sistemaDB",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
