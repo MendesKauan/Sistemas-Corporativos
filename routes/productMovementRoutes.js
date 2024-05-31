@@ -14,4 +14,12 @@ router.post('/newProductMovement', function(req, res) {
     ProductMovementController.create(req, res);
 });
 
+router.get('/findByProduct', function(req,res){
+    ProductMovementController.findByProduct(req, res);
+});
+
+router.get('/findByDeposit', function(req,res){
+    ProductMovementController.findByDeposit(req, res);
+});
+
 module.exports = router;

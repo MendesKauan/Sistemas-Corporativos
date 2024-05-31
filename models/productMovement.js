@@ -26,7 +26,11 @@ module.exports = (sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
-        amount: {
+        currentQuantity: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        quantityInputOutput: {
             type: Sequelize.INTEGER,
             allowNull: false
         },
