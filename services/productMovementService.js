@@ -59,7 +59,7 @@ class productMovementService {
                 currentQuantity -= quantityInputOutput;
             }
 
-            const newMovement  = await this.productMovementModel.create(
+            const newMovement = await this.productMovementModel.create(
                 {
                     IdProduct: product.id,
                     IdDeposit: deposit.id,

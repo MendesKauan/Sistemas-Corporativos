@@ -6,7 +6,7 @@ const { verifyToken } = require('../auth/authServices');
 var express = require('express');
 var router = express.Router();
 
-const UserService = new userService(db.User); //Construção do objeto
+const UserService = new userService(db.User, db.Department); //Construção do objeto
 const UserContoroller = new userController(UserService);
 
 

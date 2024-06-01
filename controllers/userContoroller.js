@@ -7,11 +7,11 @@ class userController {
     }
 
     async create(req, res) {
-        const {name, email, password} = req.body; //será alterado pq tem um erro de codigo
+        const {name, email, password, nameDepartment} = req.body; //será alterado pq tem um erro de codigo
 
         try {
 
-            const newUser = await this.userService.create(name, email, password);
+            const newUser = await this.userService.create(name, email, password, nameDepartment);
             res.status(200).json(newUser);
 
         } catch (error) {

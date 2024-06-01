@@ -5,21 +5,28 @@ const bcrypt = require('bcrypt');
 
 
 class userService {
-    // construtor da classe recebe a User da model
-    constructor(userModel) {
-        this.User = userModel;
+    
+    constructor(userModel, departmentModel) {
+        this.userModel = userModel;
+        this.departmentModel = departmentModel;
     }
 
-    async create(nome, email, senha) {
+    async create(nome, email, senha, nameDepartment) {
         try {
-
             const encryptedPassword = await bcrypt.hashSync(senha, 10);
 
-            const newUser = await this.User.create (
+            const department = await this.departmentModel.findOne({
+                where: {
+                    name: nameDepartment
+                }
+            });
+
+            const newUser = await this.userModel.create (
                 {
                     name : nome,
                     email : email,
-                    password : encryptedPassword
+                    password : encryptedPassword,
+                    IdDepartment : department.id
                 }
             )
             
@@ -31,7 +38,7 @@ class userService {
         }
     }
 
-    async getAllUser(login, password) {
+    async getAllUser() {
         try {
            const AllUser = this.User.findAll();
             
@@ -44,13 +51,13 @@ class userService {
 
     async getUserById(Userid) {
         try {
-            const UserById = this.User.findOne({
+            const UserById = this.userModel.findOne({
                 where:{
                     id : Userid
                 }
-        })
+        });
 
-        UserById.password = '';  
+        UserById.password = '*********';  
         return UserById ? UserById : null;
 
         } catch (error) {
@@ -61,7 +68,7 @@ class userService {
     async login(email, password) {
         try {
             
-            const user = await this.User.findOne({
+            const user = await this.userModel.findOne({
                 where:{email : email}
             });
             if(!user) {

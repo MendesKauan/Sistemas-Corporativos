@@ -8,7 +8,7 @@ var usersRouter = require('./routes/users');
 var productRouter = require('./routes/productRoutes');
 var depositRouter = require('./routes/depositRoutes');
 var productMovementRouter = require('./routes/productMovementRoutes');
-
+var departmentRouter =  require('./routes/departmentRoutes');
 
 var app = express();
 
@@ -24,6 +24,7 @@ app.use('/users', usersRouter);
 app.use('/products', productRouter);
 app.use('/deposits', depositRouter);
 app.use('/productMovement', productMovementRouter);
+app.use('/department', departmentRouter);
 
 
 const db = require('./models');

@@ -25,8 +25,16 @@ module.exports = (sequelize) => {
         password: {
             type: Sequelize.STRING,
             allowNull: false,
+        },
+        IdDepartment: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
         }
     });
+
+    User.associate = (models) => {
+        User.belongsTo(models.Department, { foreignKey: 'IdDepartment', as: 'department' });
+    }
 
     return User;
 }
