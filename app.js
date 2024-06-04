@@ -9,6 +9,10 @@ var productRouter = require('./routes/productRoutes');
 var depositRouter = require('./routes/depositRoutes');
 var productMovementRouter = require('./routes/productMovementRoutes');
 var departmentRouter =  require('./routes/departmentRoutes');
+var supplierRouter =  require('./routes/supplierRouter');
+var proposalsRouter =  require('./routes/proposalsRouter');
+
+
 
 var app = express();
 
@@ -25,6 +29,10 @@ app.use('/products', productRouter);
 app.use('/deposits', depositRouter);
 app.use('/productMovement', productMovementRouter);
 app.use('/department', departmentRouter);
+app.use('/supplier', supplierRouter);
+app.use('/proposals', proposalsRouter);
+
+
 
 
 const db = require('./models');

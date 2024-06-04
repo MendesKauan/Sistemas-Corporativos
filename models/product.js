@@ -22,6 +22,8 @@ module.exports = (sequelize) => {
 
     Product.associate = (models) => {
         Product.hasMany(models.ProductMovement, { foreignKey: 'IdProduct' });
+        Product.hasMany(models.Proposals, { foreignKey: 'IdProduct' });
+        Product.hasMany(models.Purchases, { foreignKey: 'IdProduct' });
     }
 
     return Product;

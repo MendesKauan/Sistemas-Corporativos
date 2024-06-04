@@ -11,7 +11,11 @@ const ProductMovementService = new productMovementService(db.ProductMovement, db
 const ProductMovementController = new productMovementController(ProductMovementService);
 
 router.post('/newProductMovement', function(req, res) {
-    ProductMovementController.create(req, res);
+    ProductMovementController.createInput(req, res);
+});
+
+router.post('/outputProductMovement', function(req, res) {
+    ProductMovementController.createOutput(req, res);
 });
 
 router.get('/findByProduct', function(req,res){

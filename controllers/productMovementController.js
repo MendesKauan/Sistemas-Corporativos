@@ -9,17 +9,29 @@ class productMovementController {
         this.productMovementService = productMovementService;
     }
 
-    async create(req, res) {
-        const {nameDeposit, nameProduct, typeMovement, subtypeMovement, quantityInputOutput, unitPrice, date} = req.body;
+    async createInput(req, res) {
+        const {nameDeposit, nameProduct, subtypeMovement, quantityInput, unitPrice, date} = req.body;
         try {
 
-         const newMovement = await this.productMovementService.create(nameDeposit, nameProduct, typeMovement, subtypeMovement, quantityInputOutput, unitPrice, date);
-         res.status(200).json(newMovement);
+         const newMovementInput = await this.productMovementService.createInput(nameDeposit, nameProduct, subtypeMovement, quantityInput, unitPrice, date);
+         res.status(200).json(newMovementInput);
             
         } catch (error) {
             if (error instanceof CustomError) {
                 res.status(error.status).json({ message: error.message });
             } 
+        }
+    }
+
+    async createOutput(req, res) {
+        const {nameDeposit, nameProduct, subtypeMovement, quantityOutput, date} = req.body;
+        try {
+            
+            const newMovementOutput = await this.productMovementService.createOutput(nameDeposit, nameProduct, subtypeMovement, quantityOutput, date);
+            res.status(200).json(newMovementOutput);
+
+        } catch (error) {
+            
         }
     }
 
