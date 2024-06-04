@@ -14,7 +14,7 @@ class purchasesService {
                     IdProduct: IdProduct, 
                     totalAmount: totalAmount, 
                     unitPrice: unitPrice, 
-                    purchaseStatus: purchaseStatus
+                    purchaseStatus: purchaseStatus,
                 }
             );
 

@@ -39,7 +39,7 @@ module.exports = (sequelize) => {
     Proposals.associate = (models) => {
         Proposals.belongsTo(models.Supplier, { foreignKey: 'IdSupplier', as: 'Supplier' });
         Proposals.belongsTo(models.Product, { foreignKey: 'IdProduct', as: 'Product' });
-        Proposals.belongsTo(models.User, { foreignKey: 'buyer', as: 'User' });
+        Proposals.belongsTo(models.User, { foreignKey: 'buyer' });
         Proposals.hasMany(models.Purchases, { foreignKey: 'IdProposal', as: 'Proposals' });
 
     }

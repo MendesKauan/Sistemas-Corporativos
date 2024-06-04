@@ -10,30 +10,34 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             primaryKey: true,
         },
-        Idbuyer: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        IdProduct: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        totalAmount: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        unitPrice: {
+        totalPurchaseValue: {
             type: Sequelize.FLOAT,
             allowNull: false
         },
         purchaseStatus: {
             type: Sequelize.STRING,
             allowNull: false
+        },
+        installment: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
+        NF: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        IdPurchase: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        status: {
+            type: Sequelize.STRING,
+            allowNull: false
         }
     });
 
     BillsToPay.associate = (models) => {
-        
+        BillsToPay.belongsTo(models.BillsToPay, { foreignKey: 'IdPurchase' });
     }
 
     return BillsToPay;

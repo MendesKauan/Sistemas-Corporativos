@@ -67,6 +67,8 @@ class departmentService {
             let totalPurchaseValue = quantity * bestOffer.proposedPrice;
             const purchaseStatus = "Pendente";
 
+            let NF = () => Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000;
+            
             await this.purchasesService.create(bestOffer.IdSupplier, bestOffer.id, bestOffer.buyer, bestOffer.IdProduct, quantity, bestOffer.proposedPrice, purchaseStatus);
             
             

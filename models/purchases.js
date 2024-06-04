@@ -41,9 +41,10 @@ module.exports = (sequelize) => {
     });
 
     Purchases.associate = (models) => {
+        Purchases.hasMany(models.BillsToPay, { foreignKey: 'IdPurchase' });
         Purchases.belongsTo(models.Supplier, { foreignKey: 'IdSupplier' });
         Purchases.belongsTo(models.Proposals, { foreignKey: 'IdProposal' });
-        Purchases.belongsTo(models.User, { foreignKey: 'Idbuyer', as: 'User' });
+        Purchases.belongsTo(models.User, { foreignKey: 'Idbuyer' });
         Purchases.belongsTo(models.Product, { foreignKey: 'IdProduct' });
     }
 
