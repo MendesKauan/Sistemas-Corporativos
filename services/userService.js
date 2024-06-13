@@ -28,7 +28,7 @@ class userService {
                     password : encryptedPassword,
                     IdDepartment : department.id
                 }
-            )
+            );
             
             newUser.password = '';
             return newUser ? newUser  : null;

@@ -14,30 +14,35 @@ module.exports = (sequelize) => {
             type: Sequelize.FLOAT,
             allowNull: false
         },
-        purchaseStatus: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
         installment: {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
         NF: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
             allowNull: false
         },
         IdPurchase: {
             type: Sequelize.INTEGER,
-            allowNull: false
+            allowNull: false, 
+            references: {
+                model: 'Purchases', 
+                key: 'id'
+            }
         },
         status: {
             type: Sequelize.STRING,
+            allowNull: false
+        },
+        expirationDate: {
+            type: Sequelize.DATE,
             allowNull: false
         }
     });
 
     BillsToPay.associate = (models) => {
-        BillsToPay.belongsTo(models.BillsToPay, { foreignKey: 'IdPurchase' });
+        BillsToPay.belongsTo(models.Purchases, { foreignKey: 'IdPurchase', as: 'Purchases' });
+        BillsToPay.hasMany(models.movementBillsToPay, { foreignKey: 'idTitle', as: 'movementBillsToPay' });
     }
 
     return BillsToPay;

@@ -26,6 +26,23 @@ class purchasesService {
         }
      }
 
+     async purchasesFindOne(IdPurchase) {
+        try {
+            const purchase = await this.purchasesModel.findOne(
+            {
+                where: {
+                    id: IdPurchase
+                }
+            }
+         );
+
+         return purchase ? purchase : null;
+
+        } catch (error) {
+            
+        }
+     } 
+
 }
 
 module.exports = purchasesService;

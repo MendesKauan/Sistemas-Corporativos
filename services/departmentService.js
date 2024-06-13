@@ -2,15 +2,17 @@
 
 class departmentService {
     
-    constructor(departmentModel, costCenterModel, productMovementService, proposalsService, proposalsModel, productModel, purchasesService) {
+    constructor(departmentModel, costCenterModel, productMovementService, proposalsService, proposalsModel, productModel, purchasesService, billsToPayService, billsToPayModel) {
         this.departmentModel = departmentModel;
         this.costCenterModel = costCenterModel;
         this.proposalsModel = proposalsModel;
         this.productModel = productModel;
+        this.billsToPayModel = billsToPayModel; 
 
         this.productMovementService = productMovementService;
         this.proposalsService = proposalsService;
         this.purchasesService = purchasesService;
+        this.billsToPayService = billsToPayService;
     }
 
     async create(name, codeCostCenter, balanceCostCenter) {
@@ -52,11 +54,13 @@ class departmentService {
         }
     }
 
-    async buyMaterial(nameProduct, quantity) {
+    async buyMaterial(nameProduct, nameDeposit, quantity, installment, expirationDate) {
         try {
 
             const product = await this.productModel.findOne({ where: { name: nameProduct } });
             const proposals = await this.proposalsModel.findAll({where: { idProduct: product.id }});
+
+            if(proposals.length < 3) {  throw new Error('Número insuficiente de propostas. É necessário pelo menos 3 propostas.'); }
 
             let bestOffer = proposals[0];
 
@@ -67,13 +71,36 @@ class departmentService {
             let totalPurchaseValue = quantity * bestOffer.proposedPrice;
             const purchaseStatus = "Pendente";
 
-            let NF = () => Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000;
+            function generateRandomNumber(min = 1000, max = 4000) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            let NF;
+            let NFexists;
+
+            do {
+                NF = generateRandomNumber();
+                NFexists = await this.billsToPayModel.findOne({ where: { NF : NF } });
+            } while (NFexists);
+        
             
-            await this.purchasesService.create(bestOffer.IdSupplier, bestOffer.id, bestOffer.buyer, bestOffer.IdProduct, quantity, bestOffer.proposedPrice, purchaseStatus);
-            
-            
+            //compras
+           const newPurchase = await this.purchasesService.create(bestOffer.IdSupplier, bestOffer.id, bestOffer.buyer, bestOffer.IdProduct, quantity, bestOffer.proposedPrice, purchaseStatus);
+
+            const subtypeMovement = "compra";
+
+            // registrar entrada de produtos
+            await this.productMovementService.createInput(nameDeposit, nameProduct, subtypeMovement, quantity, bestOffer.proposedPrice, bestOffer.dateProposals);
+
+            const status = "aberto";
+
+            //registrar no contas a pagar
+            await this.billsToPayService.create(totalPurchaseValue, installment, NF, newPurchase.id, status, expirationDate);
+
+
         } catch (error) {
-            
+            console.error("Error creating buy material", error);
+            throw error;
         }
     }
 }

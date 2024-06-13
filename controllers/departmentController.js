@@ -35,11 +35,11 @@ class departmentController {
     }
 
     async buyMaterial(req, res){
-        const {nameProduct, quantity} = req.body;
+        const {nameProduct, quantity, nameDeposit, installment, expirationDate} = req.body;
 
         try {
-            const menorPreco = await this.departmentService.buyMaterial(nameProduct, quantity);
-            res.status(200).json(menorPreco);
+            const newBuyMaterial = await this.departmentService.buyMaterial(nameProduct, nameDeposit, quantity, installment, expirationDate);
+            res.status(200).json(newBuyMaterial);
         } catch (error) {
             
         }
