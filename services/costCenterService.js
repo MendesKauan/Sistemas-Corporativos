@@ -24,6 +24,11 @@ class costCenterService {
         }
     }
 
+    async findById(id) {
+        const costCenterId = await this.costCenterModel.findOne({where: {id: id}});
+        return costCenterId ? costCenterId : null;
+    }
+
     
 }
 

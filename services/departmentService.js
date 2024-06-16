@@ -64,14 +64,12 @@ class departmentService {
 
             let bestOffer = proposals[0];
 
-            for(const proposal of proposals) {
-                if(proposal.proposedPrice < bestOffer.proposedPrice) { bestOffer = proposal; }
-            } 
+            for(const proposal of proposals) { if(proposal.proposedPrice < bestOffer.proposedPrice) { bestOffer = proposal; } } 
 
             let totalPurchaseValue = quantity * bestOffer.proposedPrice;
             const purchaseStatus = "Pendente";
 
-            function generateRandomNumber(min = 1000, max = 4000) {
+            function generateRandomNumber(min = 100, max = 50000) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
 
@@ -91,7 +89,7 @@ class departmentService {
 
             // registrar entrada de produtos
             await this.productMovementService.createInput(nameDeposit, nameProduct, subtypeMovement, quantity, bestOffer.proposedPrice, bestOffer.dateProposals);
-
+           
             const status = "aberto";
 
             //registrar no contas a pagar
@@ -101,6 +99,22 @@ class departmentService {
         } catch (error) {
             console.error("Error creating buy material", error);
             throw error;
+        }
+    }
+
+    async findByName(nameDepartment) {
+        try {
+
+        const department = await this.departmentModel.findOne({
+            where: {
+                name: nameDepartment
+            }
+        });
+
+            return department ? department : null;
+
+        } catch (error) {
+            
         }
     }
 }

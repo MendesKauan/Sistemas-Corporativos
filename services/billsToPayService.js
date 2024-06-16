@@ -2,34 +2,120 @@
 
 class billsToPayService {
     
-    constructor(billsToPayModel, movementBillsToPayService) {
+    constructor(billsToPayModel, departmentModel, costCenterModel, movementBillsToPayService) {
         this.billsToPayModel = billsToPayModel;
         this.movementBillsToPayService = movementBillsToPayService;
+        this.departmentModel = departmentModel;
+        this.costCenterModel = costCenterModel;
     }
 
     async create(totalPurchaseValue, installment, NF, IdPurchase, status, expirationDate) {
         try {
-            const newbillsToPay = this.billsToPayModel.create(
-                {
-                    totalPurchaseValue : totalPurchaseValue,
-                    installment : installment,
-                    NF : NF,
-                    IdPurchase : IdPurchase,
-                    status : status,
-                    expirationDate : expirationDate
+
+            if(installment > 1) { 
+                totalPurchaseValue = totalPurchaseValue/installment;
+                const createdBillsToPay = [];
+
+                for(let i=1; i<=installment; i++) {
+
+                    const newbillsToPay = await this.billsToPayModel.create(
+                        {
+                            totalPurchaseValue : totalPurchaseValue,
+                            installment : i,
+                            NF : NF,
+                            IdPurchase : IdPurchase,
+                            status : status,
+                            expirationDate : expirationDate
+                        }
+                    );
+
+                    createdBillsToPay.push(newbillsToPay);
                 }
-            );
 
+                const typeMovement = "abertura";
+                await this.movementBillsToPayService.create(createdBillsToPay[0].id, typeMovement, totalPurchaseValue, 0, 0);
 
-            const typeMovement = "abertura";
-            const billsToPay = this.billsToPayModel.findOne({ where: {NF : NF} });          
-            await this.movementBillsToPayService.create(billsToPay.id, typeMovement, totalPurchaseValue, 0, 0);
+                return createdBillsToPay
 
-            return newbillsToPay ? newbillsToPay : null;
+            }
+            else {
+                
+                const newbillsToPay = await this.billsToPayModel.create(
+                    {
+                        totalPurchaseValue : totalPurchaseValue,
+                        installment : installment,
+                        NF : NF,
+                        IdPurchase : IdPurchase,
+                        status : status,
+                        expirationDate : expirationDate
+                    }
+                );
+                
+                const typeMovement = "abertura";
+                await this.movementBillsToPayService.create(newbillsToPay.id, typeMovement, totalPurchaseValue, 0, 0);
+
+                return newbillsToPay ? newbillsToPay : null;
+            }
+            
+
 
         } catch (error) {
             console.error("Error creating bills to pay:", error);
             throw error;
+        }
+    }
+
+    async payBill(NF, nameDepartment) {
+        try {
+
+            const bill = await this.billsToPayModel.findOne({ where:{ NF: NF, status:"aberto"}, order: [['installment', 'ASC']]});
+
+            const department = await this.departmentModel.findOne({ where: { name: nameDepartment }});
+
+            const costCenter = await this.costCenterModel.findOne({where: {id: department.IdCostCenter}});
+
+            if(costCenter.balance < bill.totalPurchaseValue) {throw new error('Saldo insuficiente para pagamento')}
+
+            costCenter.balance -= bill.totalPurchaseValue;
+
+            await costCenter.save();
+
+            const status = "pago";
+
+            bill.status = status;
+            await bill.save();
+
+            const typeMovement = status;
+            await this.movementBillsToPayService.create(bill.id, typeMovement,bill.totalPurchaseValue, 0, 0);
+
+            return bill;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async cancelBill(NF) {
+        try {
+
+            const billsToCancel = await this.billsToPayModel.findAll({ where: { NF: NF } });
+            
+            if (!billsToCancel || billsToCancel.length === 0) { throw new Error('Fatura não encontrada'); }
+
+            for (let bill of billsToCancel) {
+                if (bill.status === 'pago') { throw new Error('Não é possível cancelar uma fatura já paga'); }
+
+                const canceledStatus = "cancelado";
+                bill.status = canceledStatus;
+                await bill.save();
+
+                const typeMovement = canceledStatus;
+                await this.movementBillsToPayService.create(bill.id, typeMovement, 0, 0, 0);
+            }
+
+            return billsToCancel ;
+            
+        } catch (error) {
+            console.log(error);
         }
     }
 

@@ -11,11 +11,10 @@ var productMovementRouter = require('./routes/productMovementRoutes');
 var departmentRouter =  require('./routes/departmentRoutes');
 var supplierRouter =  require('./routes/supplierRouter');
 var proposalsRouter =  require('./routes/proposalsRouter');
-
+var billsToPayRouter = require('./routes/billsToPayRoutes');
 
 
 var app = express();
-
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -31,8 +30,7 @@ app.use('/productMovement', productMovementRouter);
 app.use('/department', departmentRouter);
 app.use('/supplier', supplierRouter);
 app.use('/proposals', proposalsRouter);
-
-
+app.use('/billsToPay', billsToPayRouter);
 
 
 const db = require('./models');

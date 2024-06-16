@@ -9,10 +9,23 @@ class productMovementService {
         this.depositModel = depositModel;
     }
 
+    async getCurrentQuantity(productId, depositId) {
+        const lastMovement = await this.productMovementModel.findOne({
+            where: {
+                IdProduct: productId,
+                IdDeposit: depositId
+            },
+            order: [['date', 'DESC']]
+        });
+    
+        return lastMovement ? lastMovement.currentQuantity : 0;
+
+    }
+
     async createInput(nameDeposit, nameProduct, subtypeMovement, quantityInput, unitPrice, date) {
         try {
 
-            const product  = await this.productModel.findOne({ where: { name: nameProduct } });
+            const product = await this.productModel.findOne({ where: { name: nameProduct } });
 
             if (product == null) { throw new CustomError("Produto não encontrado", 404); }
 
@@ -20,19 +33,10 @@ class productMovementService {
 
             if (deposit == null) { throw new CustomError("Depósito não encontrado", 404); }
 
-            let currentQuantity = 0;
+            
             const typeMovement = "entrada";
 
-            const lastMovement = await this.productMovementModel.findOne({
-                where: {
-                    IdProduct: product.id
-                },
-                order: [['date', 'DESC']]
-            });
-
-            if (lastMovement) {
-                currentQuantity = lastMovement.currentQuantity;
-            }
+            let currentQuantity = await this.getCurrentQuantity(product.id, deposit.id);
 
             if(quantityInput <= 0) { 
                 throw new CustomError("Não pode gravar valores iguais ou menores que zero", 404); 

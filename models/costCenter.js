@@ -13,7 +13,6 @@ module.exports = (sequelize) => {
         code: {
             type: Sequelize.STRING,
             allowNull: false,
-            unique: true
         },
         balance: {
             type: Sequelize.FLOAT,
