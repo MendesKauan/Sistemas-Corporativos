@@ -1,5 +1,4 @@
 // ../services/userService
-const { where } = require ('sequelize');
 const { generatorToken, authUser } = require ('../auth/authServices');
 const bcrypt = require('bcrypt');
 

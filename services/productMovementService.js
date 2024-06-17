@@ -68,52 +68,52 @@ class productMovementService {
 
     async createOutput(nameDeposit, nameProduct, subtypeMovement, quantityOutput, date) {
         try {
-            const product  = await this.productModel.findOne({ where: { name: nameProduct } });
-
+            const product = await this.productModel.findOne({ where: { name: nameProduct } });
             if (product == null) { throw new CustomError("Produto não encontrado", 404); }
 
             const deposit = await this.depositModel.findOne({ where: { name: nameDeposit } });
-
             if (deposit == null) { throw new CustomError("Depósito não encontrado", 404); }
 
-            let currentQuantity = 0;
             const typeMovement = "saida";
+            let currentQuantity = await this.getCurrentQuantity(product.id, deposit.id);
+
+            if (quantityOutput <= 0) {
+                throw new CustomError("Não pode retirar valores menores ou iguais a zero", 404);
+            }
+
+            if (quantityOutput > currentQuantity) {
+                throw new CustomError("Não pode retirar valores maiores que a quantidade atual", 404);
+            }
+
+            if (currentQuantity === 0) {
+                throw new CustomError("Produto sem estoque", 400);
+            }
+
+            currentQuantity -= quantityOutput;
 
             const lastMovement = await this.productMovementModel.findOne({
                 where: {
-                    IdProduct: product.id
+                    IdProduct: product.id,
+                    IdDeposit: deposit.id
                 },
                 order: [['date', 'DESC']]
             });
 
-            if (lastMovement) { currentQuantity = lastMovement.currentQuantity; }
+            const newMovementOutput = await this.productMovementModel.create({
+                IdProduct: product.id,
+                IdDeposit: deposit.id,
+                typeMovement: typeMovement,
+                subtypeMovement: subtypeMovement,
+                currentQuantity: currentQuantity,
+                quantityInputOutput: quantityOutput,
+                unitPrice: lastMovement.unitPrice, 
+                date: date
+            });
 
-            if (quantityOutput <= 0) { throw new CustomError("Não pode retirar valores menores ou iguais a zero", 404); }
-
-            if(quantityOutput > lastMovement.currentQuantity) { throw new CustomError("Não pode retirar valores maiores que a quantidade atual", 404); }
-
-            if(lastMovement.currentQuantity === 0) { throw new CustomError("Produto sem estoque", 400); };
-            
-            currentQuantity -= quantityOutput;
-
-            const newMovementOutput = await this.productMovementModel.create(
-                {
-                    IdProduct: product.id,
-                    IdDeposit: deposit.id,
-                    typeMovement: typeMovement,
-                    subtypeMovement: subtypeMovement,
-                    currentQuantity: currentQuantity,
-                    quantityInputOutput: quantityOutput,
-                    unitPrice: lastMovement.unitPrice,
-                    date: date
-                }
-            );
-
-            return newMovementOutput? newMovementOutput : null;
-
+            return newMovementOutput ? newMovementOutput : null;
 
         } catch (error) {
-            
+            console.error(error);
         }
     }
 
