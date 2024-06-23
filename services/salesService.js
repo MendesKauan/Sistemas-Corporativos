@@ -13,7 +13,7 @@ class salesService {
 
     }
 
-    async create(nameProduct, amount, clientCPF) {
+    async create(nameProduct, amount, clientCPF, installments) {
         try {
             const client = await this.clientModel.findOne({ where: { CPF: clientCPF }});
             if(!client) { throw new error('Cliente não encontrado')}
@@ -65,11 +65,12 @@ class salesService {
 
             const unitPriceProduct = await this.productMovementService.findByProduct(nameProduct);
 
-            await this.saleDetailsServices.create(newSale.id, product.id, soldAmount, unitPriceProduct.unitPrice);
+            const expirationDate = moment().add(7, 'days').format('YYYY-MM-DD');
 
-            
+            await this.saleDetailsServices.create(newSale.id, product.id, soldAmount, unitPriceProduct.unitPrice, installments, NF, expirationDate);
 
-            return newSale + newSaleDetail
+
+            return newSale;
 
         } catch (error) {
             

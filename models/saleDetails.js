@@ -25,6 +25,14 @@ module.exports = (sequelize) => {
         unitPrice: {
             type: Sequelize.FLOAT,
             allowNull: false
+        },
+        installment: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
+        NF: {
+            type: Sequelize.STRING,
+            allowNull: false
         }
         
     });

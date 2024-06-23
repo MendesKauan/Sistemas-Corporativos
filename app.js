@@ -14,6 +14,7 @@ var proposalsRouter =  require('./routes/proposalsRouter');
 var billsToPayRouter = require('./routes/billsToPayRoutes');
 var clientRoutes = require('./routes/clientRoutes');
 var salesRoutes = require('./routes/salesRoutes');
+var billsToReceiveRoutes = require('./routes/billsToReceiveRoute');
 
 
 var app = express();
@@ -35,6 +36,7 @@ app.use('/proposals', proposalsRouter);
 app.use('/billsToPay', billsToPayRouter);
 app.use('/client', clientRoutes);
 app.use('/sales', salesRoutes);
+app.use('/billsToReceive', billsToReceiveRoutes);
 
 
 

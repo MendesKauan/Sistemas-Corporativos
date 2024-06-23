@@ -1,9 +1,6 @@
-// models/sales.js
-
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize) => {
-
     const Sales = sequelize.define('Sales', {
         id: {
             type: Sequelize.INTEGER,
@@ -22,16 +19,13 @@ module.exports = (sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false
         }
-        
     });
 
     Sales.associate = (models) => {
         Sales.belongsTo(models.Client, { foreignKey: 'idClient' });
         Sales.hasMany(models.SaleDetails, { foreignKey: 'idSale' });
-
+        Sales.hasMany(models.BillsToReceive, { foreignKey: 'idSale' });
     }
 
     return Sales;
 }
-
-
