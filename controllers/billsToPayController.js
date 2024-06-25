@@ -31,6 +31,27 @@ class billsToPayController {
         }
     }
 
+    async findOne(req, res) {
+        const { NF } = req.body;
+
+        try {
+            const bill = await this.billsToPayService.findOne(NF);
+            res.status(200).json(bill);
+        } catch (error) {
+            console.error("Error finding bill:", error);
+            res.status(500).json({ error: "Erro ao buscar fatura", message: error.message });
+        }
+    }
+
+    async findAll(req, res) {
+        try {
+            const bills = await this.billsToPayService.findAll();
+            res.status(200).json(bills);
+        } catch (error) {
+            console.error("Error finding bills:", error);
+            res.status(500).json({ error: "Erro ao buscar faturas", message: error.message });
+        }
+    }
 }
 
 module.exports = billsToPayController;

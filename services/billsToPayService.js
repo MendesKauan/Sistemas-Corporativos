@@ -119,6 +119,36 @@ class billsToPayService {
         }
     }
 
+    async findOne(NF, limit = 10, offset = 0, order = [['createdAt', 'DESC']]) {
+        try {
+            const bill = await this.billsToPayModel.findOne({
+                where: { NF: NF },
+                limit: limit,
+                offset: offset,
+                order: order
+            });
+            return bill;
+        } catch (error) {
+            console.error("Error finding bill:", error);
+            throw error;
+        }
+    }
+
+    async findAll(limit = 10, offset = 0, order = [['createdAt', 'DESC']]) {
+        try {
+            const bills = await this.billsToPayModel.findAll({
+                limit: limit,
+                offset: offset,
+                order: order
+            });
+            return bills;
+        } catch (error) {
+            console.error("Error finding bills:", error);
+            throw error;
+        }
+    }
+
+
 }
 
 module.exports = billsToPayService;

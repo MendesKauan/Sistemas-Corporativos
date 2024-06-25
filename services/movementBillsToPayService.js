@@ -11,7 +11,7 @@ class movementBillsToPayService {
         try {
             const dateMovement = moment().format('YYYY-MM-DD');
 
-            const newMovementBillsToPay = this.movementBillsToPayModel.create(
+            const newMovementBillsToPay = await this.movementBillsToPayModel.create(
                 {
                     idTitle : idTitle,
                     dateMovement : dateMovement,

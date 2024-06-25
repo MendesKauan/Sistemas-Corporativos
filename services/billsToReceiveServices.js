@@ -1,7 +1,5 @@
-// services/billsToReceiveServices.js
-
 class billsToReceiveServices {
-    
+
     constructor(billsToReceiveModel, movementBillsToReceiveServices, clientModel) {
         this.billsToReceiveModel = billsToReceiveModel;
         this.movementBillsToReceiveServices = movementBillsToReceiveServices;
@@ -60,25 +58,33 @@ class billsToReceiveServices {
                 where: { NF: NF, status: "aberto" },
                 order: [['installment', 'ASC']]
             });
-
+    
+            if (!bill) {
+                console.log("Fatura não encontrada para NF:", NF);
+                return null; // Ou outra ação adequada
+            }
+    
             const client = await this.clientModel.findOne({ where: { CPF: clientCPF } });
-
-            if (!client) { throw new Error('Cliente não encontrado'); }
-
+    
+            if (!client) {
+                throw new Error('Cliente não encontrado');
+            }
+    
             const status = "recebido";
-
+    
             bill.status = status;
             await bill.save();
-
+    
             const typeMovement = status;
             await this.movementBillsToReceiveServices.create(bill.id, typeMovement, bill.totalSaleValue, 0, 0);
-
+    
             return bill;
         } catch (error) {
             console.error("Error receiving bill:", error);
             throw error;
         }
     }
+    
 
     async cancelBill(NF) {
         try {
@@ -103,6 +109,36 @@ class billsToReceiveServices {
             throw error;
         }
     }
+
+    async findOne(NF, limit = 10, offset = 0, order = [['createdAt', 'DESC']]) {
+        try {
+            const bills = await this.billsToReceiveModel.findOne({
+                where: {NF: NF},
+                limit: limit,
+                offset: offset,
+                order: order
+            });
+            return bills;
+        } catch (error) {
+            console.error("Error finding bill:", error);
+            throw error;
+        }
+    }
+    
+    async findAll(limit = 10, offset = 0, order = [['createdAt', 'DESC']]) {
+        try {
+            const bills = await this.billsToReceiveModel.findAll({
+                limit: limit,
+                offset: offset,
+                order: order
+            });
+            return bills;
+        } catch (error) {
+            console.error("Error finding bills:", error);
+            throw error;
+        }
+    }
+    
 
 }
 

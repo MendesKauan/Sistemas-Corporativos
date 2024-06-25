@@ -11,20 +11,22 @@ class movementBillsToReceiveServices {
         try {
             const dateMovement = moment().format('YYYY-MM-DD');
 
-            const movementBillsToReceiveServices = this.movementBillsToReceiveServices.create(
+            const newMovement = await this.movementBillsToReceiveModel.create(
                 {
-                    idTitle : idTitle,
-                    dateMovement : dateMovement,
-                    typeMovement : typeMovement,
-                    movementValue : movementValue,
-                    valueFine : valueFine,
-                    valueInterest : valueInterest
+                    idTitle: idTitle,
+                    dateMovement: dateMovement,
+                    typeMovement: typeMovement,
+                    movementValue: movementValue,
+                    valueFine: valueFine,
+                    valueInterest: valueInterest
                 }
             );
-            return movementBillsToReceiveServices ? movementBillsToReceiveServices : null;
 
+            return newMovement ? newMovement : null;
+            
         } catch (error) {
-          
+            console.error("Error creating movement for bills to receive:", error);
+            throw error;
         }
     }
 
