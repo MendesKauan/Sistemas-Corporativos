@@ -117,6 +117,46 @@ class departmentService {
             
         }
     }
+
+    async findAll(limit = 10, offset = 0, order = [['createdAt', 'DESC']]) {
+        try {
+            const departments = await this.departmentModel.findAll({
+                limit: limit,
+                offset: offset,
+                order: order
+            });
+            return departments;
+
+        } catch (error) {
+            console.error("Error finding departments:", error);
+            throw error;
+        }
+    }
+
+    async update(nameDepartment, updates) {
+        try {
+            const department = await this.departmentModel.findOne({ where: { name: nameDepartment } });
+
+            if (!department) { throw new Error('Department not found'); }
+
+            if (updates.name) { department.name = updates.name; }
+
+            if (updates.codeCostCenter) { 
+                const costCenter = await this.costCenterModel.findOne({ where: { id: department.IdCostCenter } });
+
+                if (!costCenter) { throw new Error('Cost Center not found'); }
+
+                costCenter.code = updates.codeCostCenter;
+                await costCenter.save();
+            }
+
+            await department.save();
+            return department;
+            
+        } catch (error) {
+            
+        }
+    }
 }
 
 module.exports = departmentService;

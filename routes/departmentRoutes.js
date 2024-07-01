@@ -29,10 +29,21 @@ router.post('/materialRequisition', function(req, res) {
     DepartmentController.materialRequisition(req, res);
 });
 
-router.get('/buyMaterial', function(req,res) {
+router.post('/update', function(req, res) {
+    DepartmentController.update(req, res);
+});
+
+router.post('/buyMaterial', function(req,res) {
     DepartmentController.buyMaterial(req, res);
 });
 
+router.get('/findByName', function(req,res) {
+    DepartmentController.findByName(req, res);
+});
+
+router.get('/findAll', function(req,res) {
+    DepartmentController.findAll(req, res);
+});
 
 
 module.exports = router;

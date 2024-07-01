@@ -44,6 +44,36 @@ class departmentController {
             
         }
     }
+
+    async findByName(req, res) {
+        const {departmentName} = req.body;
+
+        try {
+            const department = await this.departmentService.findByName(departmentName);
+            res.status(200).json(department);
+        } catch (error) {
+            
+        }
+    }
+
+    async findAll(req, res) {
+        try {
+            const departments = await this.departmentService.findAll();
+            res.status(200).json(departments);
+        } catch (error) {
+            
+        }
+    }
+
+    async update(req, res) {
+        const { nameDepartment, updates } = req.body;
+        try {
+            const department = await this.departmentService.update(nameDepartment, updates);
+            res.status(200).json(department);
+        } catch (error) {
+            
+        }
+    }
 }
 
 module.exports = departmentController;
