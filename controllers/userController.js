@@ -20,10 +20,11 @@ class userController {
     }
 
     async getAllUser(req, res) {
-        const {login, password} = req.body;
-
         try {
-            const AllUsers = await this.userService.getAllUser(login, password);
+            const AllUsers = await this.userService.getAllUser();
+
+            AllUsers.forEach(user => { user.password = '********'; });
+
             res.status(200).json(AllUsers);    
 
         } catch (error) {
@@ -31,12 +32,15 @@ class userController {
         }
     }
 
-    async getUserById(req, res) {
-        const { id } = req.body;
+    async getUserByName(req, res) {
+        const { name } = req.body;
 
         try {
-                const UserById = await this.userService.getUserById(id);
-                res.status(200).json(UserById);
+                const UserByName = await this.userService.getUserByName(name);
+
+                if (UserByName) { UserByName.password = '*******' }
+
+                res.status(200).json(UserByName);
         } catch (error) {
             res.status(400).json({error:'usuario não localizado'})
             
@@ -50,6 +54,29 @@ class userController {
             res.status(200).json({'token' : token});
         } catch (error) {
             res.status(400).json({error:'deu ruim na geração do token'});
+        }
+    }
+
+    async getUsersByDepartment(req, res) {
+        const { departmentName } = req.body;
+        try {
+            const UsersByDepartment = await this.userService.getUsersByDepartment(departmentName);
+
+            res.status(200).json(UsersByDepartment); 
+            
+        } catch (error) {
+            
+        }
+    }
+
+    async update(req, res) {
+        const { nameUser, updates } = req.body;
+        try {
+            const userUpdate = await this.userService.update(nameUser, updates);
+            if (userUpdate) { userUpdate.password = '*******' }
+            res.status(200).json(userUpdate);
+        } catch (error) {
+            
         }
     }
 }

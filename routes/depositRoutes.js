@@ -21,8 +21,8 @@ router.get('/getAllDeposit', verifyToken, function(req, res) {
     DepositController.getAllDeposit(req, res);
 })
 
-router.get('/depositById', verifyToken, function(req, res) {
-    DepositController.getDepositById(req, res);
+router.get('/depositByName', verifyToken, function(req, res) {
+    DepositController.getDepositByName(req, res);
 });
 
 

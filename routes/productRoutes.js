@@ -21,8 +21,8 @@ router.get('/getAllProduct', verifyToken, function(req, res) {
     ProductController.getAllProduct(req, res);
 })
 
-router.get('/productById', verifyToken, function(req, res) {
-    ProductController.getProductById(req, res);
+router.get('/getProductByName', verifyToken, function(req, res) {
+    ProductController.getProductByName(req, res);
 });
 
 

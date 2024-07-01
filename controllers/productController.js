@@ -24,10 +24,10 @@ class productController {
     }
 
     async update(req, res) {
-        const {id, updates} = req.body;
+        const {nameProduct, updates} = req.body;
 
         try {
-            const updateProduct = await this.productService.update(id, updates);
+            const updateProduct = await this.productService.update(nameProduct, updates);
             res.status(200).json(updateProduct);
             
         } catch (error) {
@@ -45,12 +45,12 @@ class productController {
         }
     }
 
-    async getProductById(req, res) {
+    async getProductByName(req, res) {
 
-        const {id} = req.body;
+        const {nameProduct} = req.body;
 
         try {
-            const Product = await this.productService.getProductById(id);
+            const Product = await this.productService.getProductByName(nameProduct);
             res.status(200).json(Product);    
 
         } catch (error) {

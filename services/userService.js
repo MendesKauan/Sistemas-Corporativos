@@ -37,33 +37,6 @@ class userService {
         }
     }
 
-    async getAllUser() {
-        try {
-           const AllUser = this.User.findAll();
-            
-            return AllUser ? AllUser : null;
-
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    async getUserById(Userid) {
-        try {
-            const UserById = this.userModel.findOne({
-                where:{
-                    id : Userid
-                }
-        });
-
-        UserById.password = '*********';  
-        return UserById ? UserById : null;
-
-        } catch (error) {
-            throw error;
-        }
-    }
-
     async login(email, password) {
         try {
             
@@ -84,6 +57,75 @@ class userService {
 
         } catch (error) {
             
+        }
+    }
+
+    async update(nameUser, updates) {
+        try {
+            const userUpdate = await this.userModel.findOne({
+                where: {
+                    name: nameUser
+                }
+            });
+
+            await userUpdate.update(updates);
+            return userUpdate;
+            
+        } catch (error) {
+            
+        }
+    }
+
+    async getAllUser(limit = 10, offset = 0, order = [['createdAt', 'DESC']]) {
+        try {
+            const AllUser = await this.userModel.findAll({
+                limit: limit,
+                offset: offset,
+                order: order
+            });
+            return AllUser;
+
+        } catch (error) {
+            console.error("Error finding Users:", error);
+            throw error;
+        }
+    }
+
+    async getUserByName(UserName) {
+        try {
+            const User = this.userModel.findOne({
+                where:{
+                    name : UserName
+                }
+        });
+
+        return User ? User : null;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getUsersByDepartment(departmentName) {
+        try {
+            const department = await this.departmentModel.findOne({
+                where: { name: departmentName },
+                include: [{ model: this.userModel, as: 'Users' }]
+            });
+
+            if (!department) { throw new Error('Departamento não encontrado'); }
+
+            if (!department.Users) { return []; }
+
+            const users = department.Users.map(user => {
+                user.password = '********';
+                return user;
+            });
+
+            return users;
+
+        } catch (error) {
+            console.error("Error finding Users by Department:", error);
+            throw error;
         }
     }
 

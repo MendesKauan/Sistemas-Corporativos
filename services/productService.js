@@ -35,11 +35,11 @@ class productService {
         }
     }
 
-    async update(id, updates) {
+    async update(nameProduct, updates) {
         try {
             const product = await this.ProductModel.findOne({
                 where: {
-                    id: id
+                    name: nameProduct
                 }
             });
 
@@ -51,9 +51,13 @@ class productService {
         }
     }
 
-    async getAllProduct() {
+    async getAllProduct(limit = 10, offset = 0, order = [['createdAt', 'DESC']]) {
         try {
-            const AllProducts = this.ProductModel.findAll();
+            const AllProducts = this.ProductModel.findAll({
+                limit: limit,
+                offset: offset,
+                order: order
+            });
 
             return AllProducts ? AllProducts : null;
 
@@ -62,11 +66,11 @@ class productService {
         }
     }
 
-    async getProductById(ProductId) {
+    async getProductByName(nameProduct) {
         try {
             const ProductById = this.ProductModel.findOne({
                 where: {
-                    id: ProductId
+                    name: nameProduct
                 }
             })
 

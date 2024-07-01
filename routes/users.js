@@ -1,5 +1,5 @@
 const userService = require('../services/userService'); //classe
-const userController = require('../controllers/userContoroller');
+const userController = require('../controllers/userController');
 const db = require('../models');
 const { verifyToken } = require('../auth/authServices');
 
@@ -7,30 +7,31 @@ var express = require('express');
 var router = express.Router();
 
 const UserService = new userService(db.User, db.Department); //Construção do objeto
-const UserContoroller = new userController(UserService);
+const UserController = new userController(UserService);
 
-
-router.get('/', function(req, res, next) {
-  res.send('modulo de usuario está rodando');
-});
-
-// rota para criar um novo usuario
 
 router.post('/newUser', function(req, res) {
-  UserContoroller.create(req, res);
+  UserController.create(req, res);
 });
 
-router.get('/getAllUser', function(req, res) {
-  UserContoroller.getAllUser(req, res);
-})
-
-
-router.get('/getUserById', verifyToken, function(req, res) {
-  UserContoroller.getUserById(req, res);
-})
-
 router.post('/login', async (req, res) => {
-  UserContoroller.login(req, res);
-})
+  UserController.login(req, res);
+});
+
+router.post('/update', verifyToken, function(req, res){
+  UserController.update(req, res);
+});
+
+router.get('/getAllUser', verifyToken, function(req, res) {
+  UserController.getAllUser(req, res);
+});
+
+router.get('/getUserByName', verifyToken, function(req, res) {
+  UserController.getUserByName(req, res);
+});
+
+router.get('/getUsersByDepartment', verifyToken, function(req, res) {
+  UserController.getUsersByDepartment(req, res);
+});
 
 module.exports = router;

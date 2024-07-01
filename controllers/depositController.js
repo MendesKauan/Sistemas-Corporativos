@@ -18,10 +18,10 @@ class depositController {
     }
 
     async update(req, res) {
-        const {id, updates} = req.body;
+        const {depositName, updates} = req.body;
 
         try {
-            const updateDeposit = await this.depositService.update(id, updates);
+            const updateDeposit = await this.depositService.update(depositName, updates);
             res.status(200).json(updateDeposit);
             
         } catch (error) {
@@ -39,12 +39,12 @@ class depositController {
         }
     }
 
-    async getDepositById(req, res) {
+    async getDepositByName(req, res) {
 
-        const {id} = req.body;
+        const {depositName} = req.body;
 
         try {
-            const Deposit = await this.depositService.getDepositById(id);
+            const Deposit = await this.depositService.getDepositByName(depositName);
             res.status(200).json(Deposit);    
 
         } catch (error) {

@@ -35,21 +35,31 @@ class productMovementController {
         }
     }
 
-    async findByProduct(req, res) {
-        const { nameProduct } = req.body;
+    async findAllByProduct(req, res) {
+        const { productId } = req.body;
         try {
-            const product = await this.productMovementService.findByProduct(nameProduct);
+            const product = await this.productMovementService.findAllByProduct(productId);
             res.status(200).json(product);
         } catch (error) {
             
         }
     }
 
-    async findByDeposit(req, res) {
-        const { nameDeposit } = req.body;
+    async findAllByDeposit(req, res) {
+        const { depositId } = req.body;
         try {
-            const deposit = await this.productMovementService.findByDeposit(nameDeposit);
+            const deposit = await this.productMovementService.findAllByDeposit(depositId);
             res.status(200).json(deposit);
+        } catch (error) {
+            
+        }
+    }
+
+    async findAllByDateRange(req, res) {
+        const { startDate, endDate } = req.body;
+        try {
+            const movementDateRange = await this.productMovementService.findAllByDateRange(startDate, endDate);
+            res.status(200).json(movementDateRange);
         } catch (error) {
             
         }

@@ -1,5 +1,6 @@
 
 const CustomError = require("../Errors/CustomError");
+const { Op } = require('sequelize');
 
 class productMovementService {
 
@@ -117,36 +118,59 @@ class productMovementService {
         }
     }
 
-    async findByProduct(nameProduct) {
-        const IDproduct  = await this.productModel.findOne({
-            where: {
-                name: nameProduct
-            }
-        });
-
-        const product = await this.productMovementModel.findOne({
-            where: {
-                IdProduct: IDproduct.id
-            },
-        });
-
-        return product;
+    async findAllByProduct(productId, limit = 10, offset = 0, order = [['date', 'DESC']]) {
+        try {
+            const movements = await this.productMovementModel.findAll({
+                where: { IdProduct: productId },
+                limit: limit,
+                offset: offset,
+                order: order
+            });
+            return movements;
+        } catch (error) {
+            console.error("Error finding movements by product:", error);
+            throw error;
+        }
     }
 
-    async findByDeposit(nameDeposit) {
-        const IDdeposit = await this.depositModel.findOne({
+    async findAllByDeposit(depositId, limit = 10, offset = 0, order = [['date', 'DESC']]) {
+        try {
+            const movements = await this.productMovementModel.findAll({
+                where: { IdDeposit: depositId },
+                limit: limit,
+                offset: offset,
+                order: order
+            });
+            return movements;
+        } catch (error) {
+            console.error("Error finding movements by deposit:", error);
+            throw error;
+        }
+    }
+
+    async findAllByDateRange(startDate, endDate, limit = 10, offset = 0, order = [['date', 'DESC']]) {
+        try {
+
+            const start = new Date(startDate);
+            start.setHours(0, 0, 0, 0);
+            const end = new Date(endDate);
+            end.setHours(23, 59, 59, 999);
+
+            const movements = await this.productMovementModel.findAll({
                 where: {
-                    name: nameDeposit
-                }
-        });
-
-        const deposit = await this.productMovementModel.findOne({
-            where: {
-                IdDeposit: IDdeposit.id
-            },
-        });
-
-        return deposit;
+                    date: {
+                        [Op.between]: [start, end]
+                    }
+                },
+                limit: limit,
+                offset: offset,
+                order: order
+            });
+            return movements;
+        } catch (error) {
+            console.error("Error finding movements by date range:", error);
+            throw error;
+        }
     }
 
 }

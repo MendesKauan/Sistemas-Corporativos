@@ -21,11 +21,11 @@ class depositService {
         }
     }
 
-    async update(id, updates) {
+    async update(DepositName, updates) {
         try {
             const deposit = await this.DepositModel.findOne({
                 where: {
-                    id: id
+                    name: DepositName
                 }
             });
 
@@ -37,9 +37,13 @@ class depositService {
         }
     }
 
-    async getAllDeposit() {
+    async getAllDeposit(limit = 10, offset = 0, order = [['createdAt', 'DESC']]) {
         try {
-            const AllDeposits = this.DepositModel.findAll();
+            const AllDeposits = this.DepositModel.findAll({
+                limit: limit,
+                offset: offset,
+                order: order
+            });
 
             return AllDeposits ? AllDeposits : null;
 
@@ -48,15 +52,15 @@ class depositService {
         }
     }
 
-    async getDepositById(DepositId) {
+    async getDepositByName(DepositName) {
         try {
-            const DepositById = this.DepositModel.findOne({
+            const DepositByName = this.DepositModel.findOne({
                 where: {
-                    id: DepositId
+                    name: DepositName
                 }
             })
 
-            return DepositById ? DepositById : null;
+            return DepositByName ? DepositByName : null;
 
         } catch (error) {
             throw error;
