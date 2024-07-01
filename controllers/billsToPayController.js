@@ -31,11 +31,11 @@ class billsToPayController {
         }
     }
 
-    async findOne(req, res) {
+    async findByNF(req, res) {
         const { NF } = req.body;
 
         try {
-            const bill = await this.billsToPayService.findOne(NF);
+            const bill = await this.billsToPayService.findByNF(NF);
             res.status(200).json(bill);
         } catch (error) {
             console.error("Error finding bill:", error);

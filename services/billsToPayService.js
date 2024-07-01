@@ -119,9 +119,9 @@ class billsToPayService {
         }
     }
 
-    async findOne(NF, limit = 10, offset = 0, order = [['createdAt', 'DESC']]) {
+    async findByNF(NF, limit = 10, offset = 0, order = [['createdAt', 'DESC']]) {
         try {
-            const bill = await this.billsToPayModel.findOne({
+            const bill = await this.billsToPayModel.findAll({
                 where: { NF: NF },
                 limit: limit,
                 offset: offset,

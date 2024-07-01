@@ -20,8 +20,8 @@ router.post('/cancelBill', verifyToken, function(req, res) {
     BillsToPayController.cancelBill(req, res);
 });
 
-router.post('/findOne', verifyToken, function(req, res) {
-    BillsToPayController.findOne(req, res);
+router.post('/findByNF', verifyToken, function(req, res) {
+    BillsToPayController.findByNF(req, res);
 });
 
 router.post('/findAll', verifyToken, function(req, res) {
