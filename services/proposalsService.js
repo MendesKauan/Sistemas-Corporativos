@@ -38,7 +38,28 @@ class proposalsService {
         }
     }
 
+    async findOneByName(nameProduct) {
+        try {
+            const product = await this.productModel.findOne({ where: { name: nameProduct } });
+            if (product == null) { throw new CustomError("Produto não encontrado", 404); }
 
+            const proposal = await this.proposalsModel.findAll({ where: { IdProduct: product.id } });
+            return proposal ? proposal : null;
+        } catch (error) {
+            console.error("Error finding proposal by product name:", error);
+            throw error;
+        }
+    }
+
+    async findAll(limit = 10, offset = 0) {
+        try {
+            const proposals = await this.proposalsModel.findAll({ limit, offset });
+            return proposals;
+        } catch (error) {
+            console.error("Error finding proposals:", error);
+            throw error;
+        }
+    }
 }
 
 module.exports = proposalsService;

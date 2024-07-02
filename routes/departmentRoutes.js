@@ -14,7 +14,7 @@ const ProductMovementService = new productMovementService(db.ProductMovement, db
 const ProposalsService = new proposalsService(db.Proposals, db.Supplier, db.Product, db.User);
 const PurchasesService = new purchasesService(db.Purchases);
 const MovementBillsToPayService = new movementBillsToPayService(db.movementBillsToPay);
-const BillsToPayService = new billsToPayService(db.BillsToPay, MovementBillsToPayService);
+const BillsToPayService = new billsToPayService(db.BillsToPay, db.Department, db.CostCenter, MovementBillsToPayService);
 
 
 const DepartmentService = new departmentService(db.Department, db.CostCenter, ProductMovementService, ProposalsService, db.Proposals, db.Product, PurchasesService, BillsToPayService, db.BillsToPay);

@@ -7,7 +7,7 @@ var express = require('express');
 var router = express.Router();
 const { verifyToken } = require('../auth/authServices');
 
-const MovementBillsToPayService = new movementBillsToPayService(db.MovementBillsToPay);
+const MovementBillsToPayService = new movementBillsToPayService(db.MovementBillsToPays);
 const BillsToPayService = new billsToPayService(db.BillsToPay, db.Department, db.CostCenter, MovementBillsToPayService);
 const BillsToPayController = new billsToPayController(BillsToPayService);
 

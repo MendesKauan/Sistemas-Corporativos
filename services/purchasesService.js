@@ -43,6 +43,19 @@ class purchasesService {
         }
      } 
 
+    async findAll(limit = 10, offset = 0) {
+        try {
+            const purchases = await this.purchasesModel.findAll({
+                limit,
+                offset
+            });
+            return purchases;
+        } catch (error) {
+            console.error("Error finding purchases:", error);
+            throw error;
+        }
+    }
+
 }
 
 module.exports = purchasesService;

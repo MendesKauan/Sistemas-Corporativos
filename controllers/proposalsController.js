@@ -17,7 +17,33 @@ class proposalsController {
             res.status(500).json({error:'erro ao inserir nova proposta'});
         }
     }
+    
+    async findOneByName(req, res) {
+        const { nameProduct } = req.body;
 
+        try {
+            const proposal = await this.proposalsService.findOneByName(nameProduct);
+            if (proposal) {
+                res.status(200).json(proposal);
+            } else {
+                res.status(404).json({ error: 'Proposta não encontrada' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Erro ao buscar proposta' });
+        }
+    }
+
+    async findAll(req, res) {
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const offset = parseInt(req.query.offset, 10) || 0;
+
+        try {
+            const proposals = await this.proposalsService.findAll(limit, offset);
+            res.status(200).json(proposals);
+        } catch (error) {
+            res.status(500).json({ error: 'Erro ao buscar propostas' });
+        }
+    }
 }
 
 module.exports = proposalsController;
