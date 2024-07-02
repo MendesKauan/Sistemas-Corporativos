@@ -2,7 +2,7 @@
 const moment = require('moment');
 
 class movementBillsToPayService {
-    
+
     constructor(movementBillsToPayModel) {
         this.movementBillsToPayModel = movementBillsToPayModel;
     }
@@ -13,12 +13,12 @@ class movementBillsToPayService {
 
             const newMovementBillsToPay = await this.movementBillsToPayModel.create(
                 {
-                    idTitle : idTitle,
-                    dateMovement : dateMovement,
-                    typeMovement : typeMovement,
-                    movementValue : movementValue,
-                    valueFine : valueFine,
-                    valueInterest : valueInterest
+                    idTitle: idTitle,
+                    dateMovement: dateMovement,
+                    typeMovement: typeMovement,
+                    movementValue: movementValue,
+                    valueFine: valueFine,
+                    valueInterest: valueInterest
                 }
             );
             return newMovementBillsToPay ? newMovementBillsToPay : null;
